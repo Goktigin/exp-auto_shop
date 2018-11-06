@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AutoShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Markas" Relationship="Self.FK__Marka__CountryID__25869641" FromRole="Country" ToRole="Marka" />
+  </EntityType>
+  <EntityType Name="Marka">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="CountryID" Type="Int32" />
+    <NavigationProperty Name="Country" Relationship="Self.FK__Marka__CountryID__25869641" FromRole="Marka" ToRole="Country" />
+    <NavigationProperty Name="Models" Relationship="Self.FK__Model__MarkaID__286302EC" FromRole="Marka" ToRole="Model" />
+  </EntityType>
+  <EntityType Name="Model">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Year" Type="DateTime" Precision="3" />
+    <Property Name="Motor" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="Type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="MarkaID" Type="Int32" />
+    <NavigationProperty Name="Marka" Relationship="Self.FK__Model__MarkaID__286302EC" FromRole="Model" ToRole="Marka" />
+  </EntityType>
+  <Association Name="FK__Marka__CountryID__25869641">
+    <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="Marka" Type="Self.Marka" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Marka">
+        <PropertyRef Name="CountryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Model__MarkaID__286302EC">
+    <End Role="Marka" Type="Self.Marka" Multiplicity="0..1" />
+    <End Role="Model" Type="Self.Model" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Marka">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Model">
+        <PropertyRef Name="MarkaID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AutoShopEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Countries" EntityType="Self.Country" />
+    <EntitySet Name="Markas" EntityType="Self.Marka" />
+    <EntitySet Name="Models" EntityType="Self.Model" />
+    <AssociationSet Name="FK__Marka__CountryID__25869641" Association="Self.FK__Marka__CountryID__25869641">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="Marka" EntitySet="Markas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Model__MarkaID__286302EC" Association="Self.FK__Model__MarkaID__286302EC">
+      <End Role="Marka" EntitySet="Markas" />
+      <End Role="Model" EntitySet="Models" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
